@@ -2,7 +2,7 @@ AddCSLuaFile("cl_init.lua")
 AddCSLuaFile("shared.lua")
 include("shared.lua")
 
-ENT.Speed = 2800 -- high-speed interceptor
+ENT.Speed = 3500 -- high-speed interceptor
 
 function ENT:Initialize()
     self:SetModel("models/weapons/w_missile_launch.mdl")
@@ -42,7 +42,6 @@ function ENT:SetTarget(target)
     phys:SetVelocity(dir * self.Speed)
     self:SetAngles(dir:Angle())
 
-    -- self:EmitSound("weapons/rpg/rocket1.wav", 75, 100, 1, CHAN_WEAPON)
     self.Launched = true
 end
 
