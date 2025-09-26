@@ -34,7 +34,6 @@ function ENT:Initialize()
     -- Missile state
     self.ActiveMissiles = {}
     self.ActiveTargets = {}
-    self.NextFireGlobal = CurTime()
     self.MissilesLeft = IronDomeConsts.MissilesPerReload
     self.Reloading = false
     self.NextScan = CurTime()

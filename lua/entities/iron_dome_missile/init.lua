@@ -7,7 +7,7 @@ ENT.Speed = IronDomeConsts.MissileSpeed
 
 function ENT:Initialize()
     self:SetModel("models/weapons/w_missile_launch.mdl")
-        self:SetModelScale(2.5, 0)
+    self:SetModelScale(2.5, 0)
     self:PhysicsInit(SOLID_VPHYSICS)
     self:SetMoveType(MOVETYPE_VPHYSICS)
     self:SetSolid(SOLID_VPHYSICS)

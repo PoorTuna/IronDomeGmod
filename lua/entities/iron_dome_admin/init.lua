@@ -4,6 +4,7 @@ include("shared.lua")
 include("iron_dome/main.lua")
 include("iron_dome/consts.lua")
 
+
 IronDome_GlobalTargets = IronDome_GlobalTargets or {}
 
 function ENT:Initialize()
@@ -33,9 +34,8 @@ function ENT:Initialize()
     -- Missile state
     self.ActiveMissiles = {}
     self.ActiveTargets = {}
-    self.MissilesLeft = IronDomeConsts.MissilesPerReload
+    self.MissilesLeft = 99999
     self.Reloading = false
-    self.NextScan = CurTime()
 end
 
 function ENT:OnTakeDamage(dmginfo)
@@ -43,9 +43,6 @@ function ENT:OnTakeDamage(dmginfo)
 end
 
 function ENT:Think()
-    if CurTime() < self.NextScan then return end
-    self.NextScan = CurTime() + IronDomeConsts.ScanInterval
-
     self.ActiveMissiles = self.ActiveMissiles or {}
     self.ActiveTargets  = self.ActiveTargets or {}
 
@@ -53,18 +50,15 @@ function ENT:Think()
 
     local pos = self:GetPos()
     local hasTarget = false
-    local detectionRadius = IronDomeConsts.DetectionRadius
+    local detectionRadius = 15000
 
     for _, ent in ipairs(ents.FindInSphere(pos, detectionRadius)) do
         if not IsValidTarget(self, ent) then continue end
 
-        -- Protective dome: ignore owner projectiles
-        if ent:GetOwner() == self:GetOwner() then continue end
-
         hasTarget = true
         ClaimTarget(self, ent)
         CreateInterceptor(self, ent)
-        self.MissilesLeft = (self.MissilesLeft or IronDomeConsts.MissilesPerReload) - 1
+        self.MissilesLeft = (self.MissilesLeft or 99999) - 1
         break
     end
 
