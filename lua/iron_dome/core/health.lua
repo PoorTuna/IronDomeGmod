@@ -1,4 +1,6 @@
 -- lua/iron_dome/core/health.lua
+include("iron_dome/consts.lua")
+
 function TakeBlastDamage(ent, dmginfo)
     if not dmginfo:IsDamageType(DMG_BLAST) then return end
     local newHealth = ent:Health() - dmginfo:GetDamage()
@@ -12,8 +14,8 @@ function ExplodeEntity(ent)
     local explosion = ents.Create("env_explosion")
     if not IsValid(explosion) then return end
     explosion:SetPos(ent:GetPos())
-    explosion:SetKeyValue("iMagnitude", "500")
-    explosion:SetKeyValue("iRadiusOverride", "300")
+    explosion:SetKeyValue("iMagnitude", IronDomeConsts.ExplosionMagnitude)
+    explosion:SetKeyValue("iRadiusOverride", IronDomeConsts.ExplosionRadius)
     explosion:SetOwner(ent:GetOwner() or ent)
     explosion:Spawn()
     explosion:Fire("Explode", 0, 0)

@@ -1,8 +1,9 @@
 AddCSLuaFile("cl_init.lua")
 AddCSLuaFile("shared.lua")
 include("shared.lua")
+include("iron_dome/consts.lua")
 
-ENT.Speed = 3500 -- high-speed interceptor
+ENT.Speed = IronDomeConsts.MissileSpeed
 
 function ENT:Initialize()
     self:SetModel("models/weapons/w_missile_launch.mdl")
@@ -23,7 +24,13 @@ function ENT:Initialize()
     self.Launched = false
 
     -- Add a trail
-    util.SpriteTrail(self, 0, Color(255,255,255,200), false, 6, 16, 1, 1/(6+16)*0.5, "trails/smoke.vmt")
+    util.SpriteTrail(
+        self, 0, Color(255,255,255,200), false, 
+        IronDomeConsts.MissileTrailStart, 
+        IronDomeConsts.MissileTrailEnd, 
+        1, 1/(IronDomeConsts.MissileTrailStart + IronDomeConsts.MissileTrailEnd)*0.5, 
+        IronDomeConsts.MissileTrailTexture
+    )
 end
 
 -- Assign target and calculate initial intercept
@@ -63,10 +70,10 @@ function ENT:Think()
     self:SetAngles(dir:Angle())
 
     -- Detonation
-    if self:GetPos():Distance(interceptPoint) < 100 then
+    if self:GetPos():Distance(interceptPoint) < IronDomeConsts.MissileExplosionDist then
         local explosion = ents.Create("env_explosion")
         explosion:SetPos(self:GetPos())
-        explosion:SetKeyValue("iMagnitude", "120")
+        explosion:SetKeyValue("iMagnitude", tostring(IronDomeConsts.MissileExplosionMag))
         explosion:Spawn()
         explosion:Fire("Explode", 0, 0)
 
